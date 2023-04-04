@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
 	"image/jpeg"
 	"image/png"
 	"log"
@@ -12,26 +13,61 @@ import (
 	"sync"
 )
 
+// path relative to the current file.
 func Test() {
-	img, err := OpenImage("image_process/images/elysia.png")
+	// img, err := OpenImage("images/elysia.png")
+	// if err != nil {
+	// 	fmt.Println("Error when opening file:", err)
+	// }
+
+	// imgColor := GetImageTensor(img)
+	// newImg := ConvertGreyScale(&imgColor)
+
+	// SaveImage(newImg, "images/elysiaGrey.png")
+
+	// img, err = OpenImage("images/griseo.jpg")
+	// if err != nil {
+	// 	fmt.Println("Error when opening file:", err)
+	// }
+
+	// imgColor = GetImageTensor(img)
+	// newImg = ConvertGreyScale(&imgColor)
+
+	// SaveImage(newImg, "images/griseoGrey.jpg")
+
+	imgWidth := 28      // integer pixels
+	imgHeight := 28 * 5 //integer pixels
+	bgColor := image.White
+	rgba := image.NewRGBA(image.Rect(0, 0, imgWidth, imgHeight))
+	draw.Draw(rgba, rgba.Bounds(), bgColor, image.Pt(28, 28), draw.Src)
+
+	f, err := os.Create("images/idk.png")
 	if err != nil {
-		fmt.Println("Error when opening file:", err)
+		fmt.Println("error:", err)
+	}
+	defer f.Close()
+
+	err = png.Encode(f, rgba)
+	if err != nil {
+		fmt.Println("error:", err)
 	}
 
-	imgColor := GetImageTensor(img)
-	newImg := ConvertGreyScale(&imgColor)
+	m := image.NewRGBA(image.Rect(0, 0, 280, 280))
+	blue := color.RGBA{0, 0, 255, 255}
+	draw.Draw(m, m.Bounds(), &image.Uniform{blue}, image.Point{}, draw.Src)
 
-	SaveImage(newImg, "image_process/images/elysiaGrey.png")
+	draw.Draw(m, m.Bounds(), rgba, image.Point{28 * -3, 28 * -2}, draw.Src)
 
-	img, err = OpenImage("image_process/images/griseo.jpg")
+	f, err = os.Create("images/blue.png")
 	if err != nil {
-		fmt.Println("Error when opening file:", err)
+		fmt.Println("error:", err)
 	}
+	defer f.Close()
 
-	imgColor = GetImageTensor(img)
-	newImg = ConvertGreyScale(&imgColor)
-
-	SaveImage(newImg, "image_process/images/griseoGrey.jpg")
+	err = png.Encode(f, m)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
 }
 
 func SaveImage(img image.Image, path string) {

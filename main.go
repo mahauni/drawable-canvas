@@ -1,18 +1,19 @@
 package main
 
 import (
+	"github.com/mahauni/drawable-canvas/canvas"
 	_ "github.com/mahauni/drawable-canvas/canvas"
 	_ "github.com/mahauni/drawable-canvas/image_process"
 )
 
 func main() {
-	// canvas.Test()
+	canvas.Test()
 	// image_process.Test()
 }
 
 // Get a image -> DONE
 
-// Draw in the image (Some lines and other things)
+// Draw in the image (Some lines and other things) // DID IT ON IMAGE.GO
 
 // make a interface where i can draw using my mouse
 // calling the draw function and make the background like the image
